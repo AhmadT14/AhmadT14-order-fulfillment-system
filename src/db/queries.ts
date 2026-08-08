@@ -24,18 +24,10 @@ export async function registerusers({
     .returning();
 }
 
-export async function returnHashedPassword({ email }: { email: string }) {
+export async function returnUserByEmail({ email }: { email: string }) {
   const user = await db
     .select()
     .from(usersTable)
     .where(eq(usersTable.email, email));
-  return user[0]?.hashedPassword;
-}
-
-export async function returnUserId({ email }: { email: string }) {
-  const user = await db
-    .select()
-    .from(usersTable)
-    .where(eq(usersTable.email, email));
-  return user[0]?.id;
+  return user[0];
 }
