@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { returnUserByEmail, registerusers } from "../../../db/queries.js";
+import { returnUserByEmail, registerusers } from "../../db/queries.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -45,6 +45,8 @@ export async function login(req: Request, res: Response) {
     );
     return res.json({ token });
   } catch (error) {
+    console.log(error);
+
     return res.status(500).json({ message: "Something went wrong" });
   }
 }

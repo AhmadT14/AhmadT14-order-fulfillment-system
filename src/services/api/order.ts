@@ -6,7 +6,7 @@ import {
   createOrderItem,
   returnProductById,
   returnOrderItems,
-} from "../../../db/queries.js";
+} from "../../db/queries.js";
 
 export async function createOrdersHandler(req: Request, res: Response) {
   try {

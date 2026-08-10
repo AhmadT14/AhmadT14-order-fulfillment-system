@@ -31,6 +31,6 @@ if (process.env.JWT_SECRET === undefined) {
   throw new Error("JWT_SECRET is not defined in the environment variables");
 }
 
-app.listen(process.env.Port, () => {
-  console.log(`Server is running on port ${process.env.Port}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port ${process.env.PORT}`);
 });
