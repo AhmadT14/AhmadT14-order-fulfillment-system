@@ -111,39 +111,6 @@ export async function returnOrderById({ orderId }: { orderId: string }) {
   return result[0];
 }
 
-export async function returnProductById({ productId }: { productId: string }) {
-  const result = await db
-    .select()
-    .from(productsTable)
-    .where(eq(productsTable.id, productId));
-  return result[0];
-}
-
-export async function createProduct({
-  name,
-  price,
-  stock,
-}: {
-  name: string;
-  price: number;
-  stock: string;
-}) {
-  const result = await db
-    .insert(productsTable)
-    .values({
-      name: name,
-      price: price,
-      stock: stock,
-    })
-    .returning();
-  return result[0];
-}
-
-export async function returnProducts() {
-  const result = await db.select().from(productsTable);
-  return result;
-}
-
 export async function returnOrderItems({ orderId }: { orderId: string }) {
   const result = await db
     .select()

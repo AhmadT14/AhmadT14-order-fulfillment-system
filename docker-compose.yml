@@ -34,9 +34,12 @@ services:
 
   inventory:
     build: ./services/inventory
+    ports:
+      - "3001:3001"
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       REDIS_URL: redis://redis:6379
+      PORT: 3001
     volumes:
       - ./services/inventory:/app
       - /app/node_modules

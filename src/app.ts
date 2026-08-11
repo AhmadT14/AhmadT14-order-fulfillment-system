@@ -6,10 +6,6 @@ import {
   createOrdersHandler,
   getOrderByIdHandler,
 } from "./apiHandlers/order.js";
-import {
-  createProductsHandler,
-  returnProductsHandler,
-} from "./apiHandlers/products.js";
 
 const app: Express = express();
 app.use(express.json());
@@ -23,9 +19,6 @@ app.get("/me", verifyToken, (req: Request, res: Response) => {
 app.post("/orders", verifyToken, createOrdersHandler);
 app.get("/orders/:id", verifyToken, getOrderByIdHandler);
 app.get("/orders", verifyToken, returnOrdersByUserIdHandler);
-
-app.post("/product", verifyToken, createProductsHandler);
-app.get("/products", verifyToken, returnProductsHandler);
 
 if (process.env.JWT_SECRET === undefined) {
   throw new Error("JWT_SECRET is not defined in the environment variables");

@@ -4,7 +4,6 @@ import {
   returnOrdersByUserId,
   createOrder,
   createOrderItem,
-  returnProductById,
   returnOrderItems,
 } from "../db/queries.js";
 import { redis } from "../redis.js";
@@ -31,7 +30,17 @@ export async function createOrdersHandler(req: Request, res: Response) {
     let totalAmount = 0;
 
     for (const item of items) {
-      const product = await returnProductById({ productId: item.productId });
+      const response = await fetch(
+        `http://inventory:3001/products/${item.productId}`,
+      );
+
+      if (!response.ok) {
+        return res
+          .status(400)
+          .json({ message: `Product not found: ${item.productId}` });
+      }
+
+      const { product } = await response.json();
 
       if (!product) {
         return res.status(400).json({
