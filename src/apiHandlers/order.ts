@@ -6,7 +6,8 @@ import {
   createOrderItem,
   returnProductById,
   returnOrderItems,
-} from "../../db/queries.js";
+} from "../db/queries.js";
+import { redis } from "../redis.js";
 
 export async function createOrdersHandler(req: Request, res: Response) {
   try {
@@ -66,7 +67,13 @@ export async function createOrdersHandler(req: Request, res: Response) {
         priceAtPurchase: item.priceAtPurchase,
       });
     }
-
+    await redis.publish(
+      "order.created",
+      JSON.stringify({
+        id: order.id,
+        items: resolvedItems,
+      }),
+    );
     return res.status(201).json({ order, items: resolvedItems });
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong" });

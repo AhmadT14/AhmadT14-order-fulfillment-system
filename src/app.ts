@@ -1,15 +1,15 @@
 import express, { type Express, type Request, type Response } from "express";
-import verifyToken from "./services/middleware/verifyToken.js";
-import { login, register } from "./services/api/auth.js";
+import verifyToken from "./middleware/verifyToken.js";
+import { login, register } from "./apiHandlers/auth.js";
 import {
   returnOrdersByUserIdHandler,
   createOrdersHandler,
   getOrderByIdHandler,
-} from "./services/api/order.js";
+} from "./apiHandlers/order.js";
 import {
   createProductsHandler,
   returnProductsHandler,
-} from "./services/api/products.js";
+} from "./apiHandlers/products.js";
 
 const app: Express = express();
 app.use(express.json());

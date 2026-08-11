@@ -11,6 +11,12 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+
   app:
     build: .
     ports:
@@ -18,12 +24,25 @@ services:
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       JWT_SECRET: ${JWT_SECRET}
-      PORT: 3000
+      REDIS_URL: redis://redis:6379
+      PORT: ${PORT}
     volumes:
       - .:/app
       - /app/node_modules
     depends_on:
       - postgres
+
+  inventory:
+    build: ./services/inventory
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      REDIS_URL: redis://redis:6379
+    volumes:
+      - ./services/inventory:/app
+      - /app/node_modules
+    depends_on:
+      - postgres
+      - redis
 
 volumes:
   pgdata:

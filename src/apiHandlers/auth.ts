@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { returnUserByEmail, registerusers } from "../../db/queries.js";
+import { returnUserByEmail, registerusers } from "../db/queries.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
