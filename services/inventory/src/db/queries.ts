@@ -9,15 +9,11 @@ export async function createProduct({
 }: {
   name: string;
   price: number;
-  stock: string;
+  stock: number;
 }) {
   const result = await db
     .insert(productsTable)
-    .values({
-      name: name,
-      price: price,
-      stock: stock,
-    })
+    .values({ name, price, stock })
     .returning();
   return result[0];
 }
