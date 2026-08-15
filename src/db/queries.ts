@@ -1,10 +1,5 @@
 import { db } from "./index.js";
-import {
-  productsTable,
-  orderItemsTable,
-  ordersTable,
-  usersTable,
-} from "./schema.js";
+import { orderItemsTable, ordersTable, usersTable } from "./schema.js";
 import { eq } from "drizzle-orm";
 
 export async function registerusers({

@@ -18,6 +18,7 @@ export default function verifyToken(
     (req as any).user = decoded;
     next();
   } catch (error) {
+    console.error(error);
     return res.status(401).json({ message: "Invalid token" });
   }
 }

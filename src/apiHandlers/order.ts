@@ -86,6 +86,7 @@ export async function createOrdersHandler(req: Request, res: Response) {
     );
     return res.status(201).json({ order, items: resolvedItems });
   } catch (error) {
+    console.error(error);
     return res.status(500).json({ message: "Something went wrong" });
   }
 }
@@ -117,6 +118,7 @@ export async function getOrderByIdHandler(req: Request, res: Response) {
 
     return res.json({ order, items: orderItems });
   } catch (error) {
+    console.error(error);
     return res.status(500).json({ message: "Something went wrong" });
   }
 }
@@ -133,7 +135,7 @@ export async function returnOrdersByUserIdHandler(req: Request, res: Response) {
       userId: Number(currentUserId),
     });
 
-    let ordersWithItems = [];
+    const ordersWithItems = [];
     for (const order of orders) {
       const orderItems = await returnOrderItems({ orderId: order.id });
       ordersWithItems.push({ ...order, items: orderItems });
@@ -141,6 +143,7 @@ export async function returnOrdersByUserIdHandler(req: Request, res: Response) {
 
     return res.json({ orders: ordersWithItems });
   } catch (error) {
+    console.error(error);
     return res.status(500).json({ message: "Something went wrong" });
   }
 }

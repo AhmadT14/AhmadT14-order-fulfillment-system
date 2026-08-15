@@ -17,6 +17,7 @@ export async function register(req: Request, res: Response) {
     await registerusers({ name, age, email, hashedPassword });
     return res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
+    console.error(error);
     return res.status(500).json({ message: "Something went wrong" });
   }
 }
@@ -46,7 +47,6 @@ export async function login(req: Request, res: Response) {
     return res.json({ token });
   } catch (error) {
     console.log(error);
-
     return res.status(500).json({ message: "Something went wrong" });
   }
 }
