@@ -47,5 +47,15 @@ services:
       - postgres
       - redis
 
+  notification:
+    build: ./services/notification
+    environment:
+      REDIS_URL: redis://redis:6379
+    volumes:
+      - ./services/notification:/app
+      - /app/node_modules
+    depends_on:
+      - redis
+
 volumes:
   pgdata:

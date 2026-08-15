@@ -80,6 +80,7 @@ export async function createOrdersHandler(req: Request, res: Response) {
       "order.created",
       JSON.stringify({
         id: order.id,
+        userId: order.user_id,
         items: resolvedItems,
       }),
     );

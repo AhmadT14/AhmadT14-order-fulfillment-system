@@ -15,7 +15,6 @@ app.listen(port, () => {
   console.log(`Inventory service HTTP API running on port ${port}`);
 });
 
-// --- Redis subscriber, same as before ---
 const redisUrl = process.env.REDIS_URL;
 if (!redisUrl) {
   throw new Error("Missing REDIS_URL environment variable");
