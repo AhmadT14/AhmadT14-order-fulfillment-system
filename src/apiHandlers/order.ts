@@ -10,8 +10,7 @@ import { redis } from "../redis.js";
 
 export async function createOrdersHandler(req: Request, res: Response) {
   try {
-    const currentUserId = (req as any).user?.sub as string | undefined;
-
+    const currentUserId = req.user?.sub;
     if (!currentUserId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -105,8 +104,7 @@ export async function getOrderByIdHandler(req: Request, res: Response) {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    const currentUserId = (req as any).user?.sub as string | undefined;
-
+    const currentUserId = req.user?.sub;
     if (
       !currentUserId ||
       order.user_id === null ||
@@ -125,8 +123,7 @@ export async function getOrderByIdHandler(req: Request, res: Response) {
 
 export async function returnOrdersByUserIdHandler(req: Request, res: Response) {
   try {
-    const currentUserId = (req as any).user?.sub as string | undefined;
-
+    const currentUserId = req.user?.sub;
     if (!currentUserId) {
       return res.status(401).json({ message: "Unauthorized" });
     }

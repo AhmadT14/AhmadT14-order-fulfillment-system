@@ -13,7 +13,7 @@ app.use(express.json());
 app.post("/register", register);
 app.post("/login", login);
 app.get("/me", verifyToken, (req: Request, res: Response) => {
-  return res.json({ user: (req as any).user });
+  return res.json({ user: req.user?.sub });
 });
 
 app.post("/orders", verifyToken, createOrdersHandler);
