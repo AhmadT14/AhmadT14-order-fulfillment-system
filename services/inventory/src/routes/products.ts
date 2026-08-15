@@ -1,5 +1,6 @@
 import { Router, type Request, type Response } from "express";
 import { createProduct, returnProductById } from "../db/queries.js";
+import { redis } from "../redis.js";
 
 const router = Router();
 
@@ -24,10 +25,22 @@ router.get("/products/:id", async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid product id" });
     }
 
+    const productData = await redis.get(`product:${id}`);
+    if (productData) {
+      return res.json({ product: JSON.parse(productData) });
+    }
+
     const product = await returnProductById({ productId: id });
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
+
+    try {
+      await redis.set(`product:${id}`, JSON.stringify(product), "EX", 3600);
+    } catch (cacheError) {
+      console.error("Failed to cache product:", cacheError);
+    }
+
     return res.json({ product });
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong" });

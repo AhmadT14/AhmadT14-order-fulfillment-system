@@ -5,6 +5,7 @@ import { eq, sql } from "drizzle-orm";
 import { db } from "./db/index.js";
 import { productsTable } from "./db/schema.js";
 import productsRouter from "./routes/products.js";
+import { redis } from "./redis.js";
 
 const app = express();
 app.use(express.json());
@@ -39,6 +40,7 @@ subscriber.on("message", async (channel, message) => {
         .update(productsTable)
         .set({ stock: sql`${productsTable.stock} - ${item.quantity}` })
         .where(eq(productsTable.id, item.productId));
+      await redis.del(`product:${item.productId}`);
     }
     console.log(`Stock updated for order ${order.id}`);
   } catch (error) {
