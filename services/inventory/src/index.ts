@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express from "express";
-import Redis from "ioredis";
+import { Redis } from "ioredis";
 import { eq, sql } from "drizzle-orm";
 import { db } from "./db/index.js";
 import { productsTable } from "./db/schema.js";
