@@ -4,22 +4,11 @@ A backend system demonstrating event-driven microservices architecture: authenti
 
 ## Architecture
 
-```
-┌──────────────┐         ┌───────────┐         ┌───────────────────┐
-│   Main App    │────────▶│   Redis    │────────▶│ Inventory Service  │
-│ (auth+orders) │ publish │  (pub/sub) │ subscribe│ (products + stock) │
-└──────────────┘         └─────┬─────┘         └───────────────────┘
-       │                        │
-       │                        ▼
-       │                 ┌───────────────────────┐
-       │                 │ Notification Service    │
-       │                 │  (logs on order.created) │
-       │                 └───────────────────────┘
-       ▼
-┌─────────────┐
-│  PostgreSQL  │
-└─────────────┘
-```
+- **Main app** (auth + orders) publishes an `order.created` event to **Redis** after creating an order, and calls the **Inventory service** directly over REST to check real-time product price and stock before doing so.
+- **Redis** (pub/sub) broadcasts the `order.created` event to any subscribed services, independently and without waiting for a response.
+- **Inventory service** (owns products + stock) subscribes to `order.created` and decrements stock accordingly. It also exposes a REST API for product reads/writes, backed by Redis-cached reads.
+- **Notification service** independently subscribes to the same `order.created` event and logs a simulated notification, fully decoupled from inventory's success or failure.
+- **PostgreSQL** is shared across the main app and inventory service; each service only queries the tables it owns.
 
 ### Services
 
